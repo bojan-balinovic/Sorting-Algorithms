@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Node } from 'src/app/models/node';
+import { BubbleSort } from './alghorithms/bubble-sort';
+import { SortingAlghorithm } from './alghorithms/sorting-alghorithm';
 import { ChartComponent } from './components/chart/chart.component';
 
 @Component({
@@ -14,7 +16,10 @@ export class AppComponent implements OnInit {
 
   nodes: Array<Node> = new Array<Node>();
 
-  ngOnInit() {}
+  sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
+  ngOnInit() {
+    this.sortingAlgorithm.setTrategy(new BubbleSort());
+  }
   async ngAfterViewInit() {
     for (let i = 0; i < 50; i++) {
       let randomNumber = Math.random() * 500;
@@ -22,18 +27,10 @@ export class AppComponent implements OnInit {
     }
     this.rectanglesDrawer.drawRects(this.nodes);
 
-    for (let x = 0; x < this.nodes.length; ++x) {
-      for (let y = 0; y < this.nodes.length; ++y) {
-        if (this.nodes[x].value < this.nodes[y].value) {
-          let p = this.nodes[x].value;
-          this.nodes[x].value = this.nodes[y].value;
-          this.nodes[y].value = p;
-        }
-
-        this.rectanglesDrawer.updateRectsFromNodes();
-        await delay(1);
-      }
-    }
+    this.sortingAlgorithm.sort(this.nodes, async () => {
+      this.rectanglesDrawer.updateRectsFromNodes();
+      await delay(1);
+    })
   }
 }
 
