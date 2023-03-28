@@ -1,3 +1,3 @@
 export abstract class SortStrategy {
-    abstract sort(nodes: any[], nodeSwapSignal: () => void): Promise<any[]>;
+    abstract sort(nodes: any[], nodeSwapCallback: () => void): Promise<any[]>;
 }
