@@ -10,10 +10,10 @@ export class SortingAlghorithm {
         this.sortStrategy = strategy;
     }
 
-    sort(nodes: any[], nodeSwapCallback: () => void) {
+    async sort(nodes: any[], nodeSwapCallback: () => void) {
         if (!this.sortStrategy)
             throw new Error("Sort strategy not set.");
 
-        this.sortStrategy?.sort(nodes, nodeSwapCallback);
+        await this.sortStrategy?.sort(nodes, nodeSwapCallback);
     }
 }

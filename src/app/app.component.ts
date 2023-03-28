@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Node } from 'src/app/models/node';
 import { BubbleSort } from './alghorithms/bubble-sort';
+import { QuickSort } from './alghorithms/quick-sort';
 import { SortingAlghorithm } from './alghorithms/sorting-alghorithm';
 import { ChartComponent } from './components/chart/chart.component';
 
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
 
   sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
   ngOnInit() {
-    this.sortingAlgorithm.setTrategy(new BubbleSort());
+    this.sortingAlgorithm.setTrategy(new QuickSort());
   }
   async ngAfterViewInit() {
     for (let i = 0; i < 50; i++) {
@@ -27,10 +28,10 @@ export class AppComponent implements OnInit {
     }
     this.rectanglesDrawer.drawRects(this.nodes);
 
-    this.sortingAlgorithm.sort(this.nodes, async () => {
-      this.rectanglesDrawer.updateRectsFromNodes();
-      await delay(1);
-    })
+    // this.sortingAlgorithm.sort(this.nodes, async () => {
+    //   this.rectanglesDrawer.updateRectsFromNodes();
+    //   await delay(1);
+    // })
   }
 }
 
