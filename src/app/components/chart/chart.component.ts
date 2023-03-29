@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { Node } from 'src/app/models/node';
 
 import * as d3 from 'd3';
@@ -9,52 +16,38 @@ import * as d3 from 'd3';
   styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent implements OnInit {
-  @ViewChild('svgContainer') svgContainer!: ElementRef;
-  svg: any;
-  rects: any;
-  private readonly svgHeight = 500;
-  private readonly svgWidth = 500;
+  @ViewChild('canvas', { static: true })
+  canvas!: ElementRef<HTMLCanvasElement>;
 
-  constructor() {}
+  offsetX = 500;
+  offsetY = 250;
 
-  ngOnInit(): void {}
+  private drawingContext!: CanvasRenderingContext2D;
 
-  ngAfterViewInit(): void {
-    const svg = d3
-      .select(this.svgContainer.nativeElement)
-      .attr('width', this.svgWidth)
-      .attr('height', this.svgHeight);
-    this.svg = svg;
+  constructor(private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    this.drawingContext = this.canvas.nativeElement.getContext(
+      '2d'
+    ) as CanvasRenderingContext2D;
+    this.canvas.nativeElement.width = window.innerWidth;
+    this.canvas.nativeElement.height = window.innerHeight;
   }
 
-  public updateRectsFromNodes() {
-    this.rects
-      .attr('height', (d: Node) => {
-        return d.value;
-      })
-      .attr('y', (n: Node) => {
-        return this.svgHeight - n.value;
-      });
+  public initNodes(nodes: Node[]) {
+    nodes.forEach((node, i) => {
+      this.drawRectangle(i * 10 + this.offsetX, 0, 10, node.value);
+    });
   }
-  public drawRects(nodes: Node[]) {
-    const rectWidth = 10;
 
-    this.rects = this.svg
-      .selectAll('rect')
-      .data(nodes)
-      .enter()
-      .append('rect')
-      .attr('x', (n: Node) => {
-        return n.id * rectWidth;
-      })
-      .attr('y', (n: Node) => {
-        return this.svgHeight - n.value;
-      })
-      .attr('width', rectWidth)
-      .attr('height', (d: Node) => {
-        return d.value;
-      })
-      .style('fill', 'blue')
-      .style('stroke', 'black');
+  public updateNodes(nodes: Node[]) {}
+
+  private drawNodes() {}
+
+  private drawRectangle(x: number, y: number, width: number, height: number) {
+    this.drawingContext.beginPath();
+    y = 500 - height + this.offsetY;
+    this.drawingContext.fillRect(x, y, width, height);
+    this.drawingContext.stroke();
   }
 }
