@@ -1,34 +1,51 @@
 import { SortStrategy } from './sort-strategy';
 
 export class QuickSort extends SortStrategy {
-  public sort(nodes: any[], nodeSwapCallback: () => void): Promise<any[]> {
-    return new Promise(async (resolve) => {
+  public sort(
+    nodes: any[],
+    nodeSwapCallback: (currentNodesState: any[]) => void
+  ): Promise<any[]> {
+    console.log('quick sort alg');
+    return new Promise((resolve) => {
+      resolve(this.quickSort(nodes, nodeSwapCallback));
+    });
+  }
+
+  private _nodesRef: Node[] = [];
+
+  private quickSort(
+    nodes: any[],
+    nodeSwapCallback: (currentNodesState: any[]) => void
+  ): Promise<any[]> {
+    return new Promise(async (resolve, reject) => {
+      console.log('inside promise')
       if (nodes.length <= 1) {
         resolve(nodes);
+        return;
       }
 
-      const pivot = nodes[nodes.length-1];
-      const left = [];
-      const equal = [];
-      const right = [];
-      
-      for (const element of nodes) {
-        if (element < pivot) {
-          left.push(element);
-        } else if (element === pivot) {
-          equal.push(element);
-        } else {
-          right.push(element);
-        }
-        //await nodeSwapCallback();
-      }
+      let pivot = nodes[0];
 
-      resolve(
-        (await this.sort(left, nodeSwapCallback)).concat(
-          equal,
-          await this.sort(right, nodeSwapCallback)
-        )
-      );
+      let left = [];
+      let right = [];
+
+      for (var i = 1; i < nodes.length; i++) {
+        nodes[i].value < pivot.value
+          ? left.push(nodes[i])
+          : right.push(nodes[i]);
+
+      }
+      //await nodeSwapCallback(left.concat(pivot,right));
+      Promise.all([
+        this.quickSort(left, nodeSwapCallback),
+        this.quickSort(right, nodeSwapCallback),
+      ])
+        .then((values) => {
+          resolve(values[0].concat(pivot, values[1]));
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
   }
 }

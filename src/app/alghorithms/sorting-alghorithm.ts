@@ -1,19 +1,16 @@
-import { SortStrategy } from "./sort-strategy";
+import { SortStrategy } from './sort-strategy';
 
 export class SortingAlghorithm {
-    constructor() {
+  constructor() {}
+  sortStrategy?: SortStrategy;
 
-    }
-    sortStrategy?: SortStrategy;
+  setTrategy(strategy: SortStrategy) {
+    this.sortStrategy = strategy;
+  }
 
-    setTrategy(strategy: SortStrategy) {
-        this.sortStrategy = strategy;
-    }
+  async sort(nodes: any[], nodeSwapCallback: (currentNodesState:any[]) => void): Promise<any[]> {
+    if (!this.sortStrategy) throw new Error('Sort strategy not set.');
 
-    async sort(nodes: any[], nodeSwapCallback: () => void) {
-        if (!this.sortStrategy)
-            throw new Error("Sort strategy not set.");
-
-        await this.sortStrategy?.sort(nodes, nodeSwapCallback);
-    }
+    return await this.sortStrategy?.sort(nodes, nodeSwapCallback);
+  }
 }

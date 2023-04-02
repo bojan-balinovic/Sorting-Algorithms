@@ -1,7 +1,7 @@
 import { SortStrategy } from "./sort-strategy";
 
 export class BubbleSort extends SortStrategy {
-    sort(nodes: any[], nodeSwapCallback: () => void): Promise<any[]> {
+    sort(nodes: any[], nodeSwapCallback: (currentNodesState:any[]) => void): Promise<any[]> {
         return new Promise(async (resolve) => {
             for (let x = 0; x < nodes.length; ++x) {
                 for (let y = 0; y < nodes.length; ++y) {
@@ -10,7 +10,7 @@ export class BubbleSort extends SortStrategy {
                         nodes[x].value = nodes[y].value;
                         nodes[y].value = p;
                     }
-                    await nodeSwapCallback();
+                    await nodeSwapCallback(nodes);
                 }
             }
             resolve(nodes);
