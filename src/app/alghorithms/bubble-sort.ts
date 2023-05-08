@@ -10,8 +10,9 @@ export class BubbleSort extends SortStrategy {
                         nodes[x].value = nodes[y].value;
                         nodes[y].value = p;
                     }
-                    await nodeSwapCallback(nodes);
                 }
+                await nodeSwapCallback(nodes);
+
             }
             resolve(nodes);
         })

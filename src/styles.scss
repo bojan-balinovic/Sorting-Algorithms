@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';//notice that the file imported is also different
+@include mat-core();
+
+$candy-app-primary: mat-palette($mat-indigo); //notice that functions not Namespaced
+
+$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

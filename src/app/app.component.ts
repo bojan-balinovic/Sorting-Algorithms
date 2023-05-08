@@ -4,6 +4,7 @@ import { BubbleSort } from './alghorithms/bubble-sort';
 import { QuickSort } from './alghorithms/quick-sort';
 import { SortingAlghorithm } from './alghorithms/sorting-alghorithm';
 import { ChartComponent } from './components/chart/chart.component';
+import { SelectionSort } from './alghorithms/selection-sort';
 
 @Component({
   selector: 'app-root',
@@ -20,10 +21,10 @@ export class AppComponent implements OnInit {
   sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
   constructor(private zone: NgZone) {}
   ngOnInit() {
-    this.sortingAlgorithm.setTrategy(new QuickSort());
+    this.sortingAlgorithm.setTrategy(new BubbleSort());
   }
   async ngAfterViewInit() {
-    this.zone.runOutsideAngular(async() => {
+    this.zone.runOutsideAngular(async () => {
       for (let i = 0; i < 50; i++) {
         let randomNumber = Math.random() * 500;
         this.nodes.push(new Node({ id: i, value: Math.floor(randomNumber) }));
@@ -33,16 +34,29 @@ export class AppComponent implements OnInit {
 
       this.sortingAlgorithm
         .sort(this.nodes, async (nodes: any[]) => {
-          this.chartComponent.updateNodes(nodes);
-          await delay(1)
+          //console.log(nodes)
+           this.chartComponent.updateNodes(nodes);
+          console.log('udpate ');
+          await delay(100);
+          //  new Promise((resolve) => {
+          //   setTimeout(() => {
+          //     requestAnimationFrame(() => {
+          //       this.chartComponent.updateNodes(nodes);
+          //       resolve(undefined);
+          //     });
+              
+          //   }, 100);
+          // });
         })
         .then((nodes) => {
           this.nodes = nodes;
+          console.log(nodes);
         });
 
       console.log(this.nodes);
     });
   }
+  bla() {}
 }
 
 function delay(milliseconds: number) {
