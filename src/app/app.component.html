@@ -3,7 +3,16 @@
     <span>Sorting algorithms</span>
   </mat-toolbar-row>
 </mat-toolbar>
-
+<div class="text-center">
+  <mat-form-field appearance="fill">
+    <mat-label>Algorithm</mat-label>
+    <mat-select [(ngModel)]="selectedAlgorithm">
+      <mat-option *ngFor="let algorithm of algorithms" [value]="algorithm">{{
+        algorithm
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div class="rectangles-wrapper">
   <app-chart #chart></app-chart>
 </div>

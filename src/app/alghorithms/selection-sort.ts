@@ -1,6 +1,6 @@
-import { SortStrategy } from './sort-strategy';
+import { Strategy } from './strategy';
 
-export class SelectionSort extends SortStrategy {
+export class SelectionSort extends Strategy {
   override sort(
     nodes: any[],
     nodeSwapCallback: (currentNodesState: any[]) => void

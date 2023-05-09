@@ -1,10 +1,10 @@
-import { SortStrategy } from './sort-strategy';
+import { Strategy } from './strategy';
 
 export class SortingAlghorithm {
   constructor() {}
-  sortStrategy?: SortStrategy;
+  sortStrategy?: Strategy;
 
-  setTrategy(strategy: SortStrategy) {
+  setTrategy(strategy: Strategy) {
     this.sortStrategy = strategy;
   }
 

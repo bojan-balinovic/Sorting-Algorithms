@@ -1,6 +1,6 @@
-import { SortStrategy } from './sort-strategy';
+import { Strategy } from './strategy';
 
-export class QuickSort extends SortStrategy {
+export class QuickSort extends Strategy {
   public sort(
     nodes: any[],
     nodeSwapCallback: (currentNodesState: any[]) => void

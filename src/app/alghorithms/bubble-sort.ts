@@ -1,6 +1,6 @@
-import { SortStrategy } from "./sort-strategy";
+import { Strategy } from "./strategy";
 
-export class BubbleSort extends SortStrategy {
+export class BubbleSort extends Strategy {
     sort(nodes: any[], nodeSwapCallback: (currentNodesState:any[]) => void): Promise<any[]> {
         return new Promise(async (resolve) => {
             for (let x = 0; x < nodes.length; ++x) {

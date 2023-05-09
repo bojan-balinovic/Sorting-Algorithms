@@ -5,6 +5,8 @@ import { QuickSort } from './alghorithms/quick-sort';
 import { SortingAlghorithm } from './alghorithms/sorting-alghorithm';
 import { ChartComponent } from './components/chart/chart.component';
 import { SelectionSort } from './alghorithms/selection-sort';
+import { Strategy } from './alghorithms/strategy';
+import { Algorithm } from './models/algorithm';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +21,13 @@ export class AppComponent implements OnInit {
   nodes: Array<Node> = new Array<Node>();
 
   sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
+  selectedAlgorithm?: Algorithm;
+  algorithms: Algorithm[] = [
+    {
+      name: 'Bubble sort',
+      strategy: new BubbleSort(),
+    },
+  ];
   constructor(private zone: NgZone) {}
   ngOnInit() {
     this.sortingAlgorithm.setTrategy(new BubbleSort());
@@ -35,7 +44,7 @@ export class AppComponent implements OnInit {
       this.sortingAlgorithm
         .sort(this.nodes, async (nodes: any[]) => {
           //console.log(nodes)
-           this.chartComponent.updateNodes(nodes);
+          this.chartComponent.updateNodes(nodes);
           console.log('udpate ');
           await delay(100);
           //  new Promise((resolve) => {
@@ -44,7 +53,7 @@ export class AppComponent implements OnInit {
           //       this.chartComponent.updateNodes(nodes);
           //       resolve(undefined);
           //     });
-              
+
           //   }, 100);
           // });
         })
