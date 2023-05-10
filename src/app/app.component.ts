@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
 
   sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
   selectedAlgorithm?: Algorithm;
-  speed: number = 1;
+  speed: number = 50;
 
   algorithms: Algorithm[] = [
     {
@@ -43,14 +43,15 @@ export class AppComponent implements OnInit {
   }
 
   generateRandomNodes() {
-    this.chartComponent.clearAll();
     this.nodes = [];
+    this.chartComponent.clearAll();
     for (let i = 0; i < 100; i++) {
       let randomNumber = Math.random() * 500;
       this.nodes.push(new Node({ id: i, value: Math.floor(randomNumber) }));
     }
     this.chartComponent.initNodes(this.nodes);
   }
+
   onChangeAlgorithm() {
     this.sortingAlgorithm.setTrategy(
       this.selectedAlgorithm?.strategy as Strategy
@@ -58,11 +59,12 @@ export class AppComponent implements OnInit {
   }
 
   sort() {
+    console.log(this.speed)
     this.zone.runOutsideAngular(async () => {
       this.sortingAlgorithm
         .sort(this.nodes, async (nodes: any[]) => {
-          this.chartComponent.updateNodes(nodes);
           await delay(this.speed);
+          this.chartComponent.updateNodes(nodes);
         })
         .then((nodes) => {
           this.nodes = nodes;
