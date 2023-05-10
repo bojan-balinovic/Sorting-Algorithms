@@ -1,3 +1,7 @@
+//Bootstrap
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+//Angular material
 @import '~@angular/material/theming';//notice that the file imported is also different
 @include mat-core();
 
