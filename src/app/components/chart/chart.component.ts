@@ -19,8 +19,8 @@ export class ChartComponent implements OnInit {
   @ViewChild('canvas', { static: true })
   canvas!: ElementRef<HTMLCanvasElement>;
 
-  offsetX = 0;
-  offsetY = 250;
+  offsetX = 35;
+  offsetY = 0;
   graphicsObjects: any[] = [];
   private drawingContext!: CanvasRenderingContext2D;
 
@@ -30,8 +30,9 @@ export class ChartComponent implements OnInit {
     this.drawingContext = this.canvas.nativeElement.getContext(
       '2d'
     ) as CanvasRenderingContext2D;
-    this.canvas.nativeElement.width = window.innerWidth;
-    this.canvas.nativeElement.height = window.innerHeight;
+    this.canvas.nativeElement.width = 0.75 * window.innerWidth;
+    this.canvas.nativeElement.height = 500;
+    window.addEventListener('resize', () => {});
   }
 
   public initNodes(nodes: Node[]) {
@@ -70,6 +71,14 @@ export class ChartComponent implements OnInit {
       this.drawingContext.clearRect(b.x, b.y, b.width, b.height);
     });
     this.graphicsObjects = [];
+  }
+  clearAll() {
+    this.drawingContext.moveTo(0,0);
+    this.clearnGraphicsObjects();
+    this.drawingContext.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+
+    // Clear everything from the canvas
+    this.drawingContext.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   }
 }
 interface GraphicsObject {

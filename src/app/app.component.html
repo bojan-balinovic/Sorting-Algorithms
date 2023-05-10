@@ -3,16 +3,59 @@
     <span>Sorting algorithms</span>
   </mat-toolbar-row>
 </mat-toolbar>
-<div class="text-center">
-  <mat-form-field appearance="fill">
-    <mat-label>Algorithm</mat-label>
-    <mat-select [(ngModel)]="selectedAlgorithm">
-      <mat-option *ngFor="let algorithm of algorithms" [value]="algorithm">{{
-        algorithm
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-<div class="rectangles-wrapper">
-  <app-chart #chart></app-chart>
+<div class="row justify-content-center">
+  <div class="col-10">
+    <mat-card class="card">
+      <mat-card-header>
+        <div class="row w-100">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Algorithm</mat-label>
+              <mat-select
+                [(ngModel)]="selectedAlgorithm"
+                (ngModelChange)="onChangeAlgorithm()"
+              >
+                <mat-option
+                  *ngFor="let algorithm of algorithms"
+                  [value]="algorithm"
+                  >{{ algorithm.name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-2">
+            <mat-label>Speed</mat-label>
+            <mat-slider>
+              <input matSliderThumb />
+            </mat-slider>
+          </div>
+          <div class="col-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="sort()"
+              class="w-100"
+            >
+              Sort
+            </button>
+          </div>
+          <div class="col-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="generateRandomNodes()"
+              class="w-100"
+            >
+              Randomize
+            </button>
+          </div>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="rectangles-wrapper">
+          <app-chart #chart></app-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

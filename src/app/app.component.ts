@@ -22,40 +22,47 @@ export class AppComponent implements OnInit {
 
   sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
   selectedAlgorithm?: Algorithm;
+  speed: number = 1;
+
   algorithms: Algorithm[] = [
     {
       name: 'Bubble sort',
       strategy: new BubbleSort(),
     },
   ];
-  constructor(private zone: NgZone) {}
-  ngOnInit() {
-    this.sortingAlgorithm.setTrategy(new BubbleSort());
-  }
-  async ngAfterViewInit() {
-    this.zone.runOutsideAngular(async () => {
-      for (let i = 0; i < 50; i++) {
-        let randomNumber = Math.random() * 500;
-        this.nodes.push(new Node({ id: i, value: Math.floor(randomNumber) }));
-      }
-      await delay(100);
-      this.chartComponent.initNodes(this.nodes);
 
+  constructor(private zone: NgZone) {}
+
+  ngOnInit() {
+    this.selectedAlgorithm = this.algorithms[0];
+    this.sortingAlgorithm.setTrategy(this.algorithms[0].strategy);
+  }
+
+  ngAfterViewInit() {
+    this.generateRandomNodes();
+  }
+
+  generateRandomNodes() {
+    this.chartComponent.clearAll();
+    this.nodes = [];
+    for (let i = 0; i < 100; i++) {
+      let randomNumber = Math.random() * 500;
+      this.nodes.push(new Node({ id: i, value: Math.floor(randomNumber) }));
+    }
+    this.chartComponent.initNodes(this.nodes);
+  }
+  onChangeAlgorithm() {
+    this.sortingAlgorithm.setTrategy(
+      this.selectedAlgorithm?.strategy as Strategy
+    );
+  }
+
+  sort() {
+    this.zone.runOutsideAngular(async () => {
       this.sortingAlgorithm
         .sort(this.nodes, async (nodes: any[]) => {
-          //console.log(nodes)
           this.chartComponent.updateNodes(nodes);
-          console.log('udpate ');
-          await delay(100);
-          //  new Promise((resolve) => {
-          //   setTimeout(() => {
-          //     requestAnimationFrame(() => {
-          //       this.chartComponent.updateNodes(nodes);
-          //       resolve(undefined);
-          //     });
-
-          //   }, 100);
-          // });
+          await delay(this.speed);
         })
         .then((nodes) => {
           this.nodes = nodes;
@@ -65,7 +72,6 @@ export class AppComponent implements OnInit {
       console.log(this.nodes);
     });
   }
-  bla() {}
 }
 
 function delay(milliseconds: number) {
