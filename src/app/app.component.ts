@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
       strategy: new SelectionSort(),
     },
   ];
+  isSorting: boolean = false;
 
   constructor(private zone: NgZone) {}
 
@@ -67,7 +68,8 @@ export class AppComponent implements OnInit {
   }
 
   sort() {
-    console.log(this.speed)
+    if (this.isSorting) return;
+    this.isSorting = true;
     this.zone.runOutsideAngular(async () => {
       this.sortingAlgorithm
         .sort(this.nodes, async (nodes: any[]) => {
@@ -75,11 +77,10 @@ export class AppComponent implements OnInit {
           this.chartComponent.updateNodes(nodes);
         })
         .then((nodes) => {
+          //when finished
           this.nodes = nodes;
-          console.log(nodes);
+          this.isSorting = false;
         });
-
-      console.log(this.nodes);
     });
   }
 }
