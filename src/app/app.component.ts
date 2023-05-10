@@ -29,6 +29,14 @@ export class AppComponent implements OnInit {
       name: 'Bubble sort',
       strategy: new BubbleSort(),
     },
+    {
+      name: 'Quick sort',
+      strategy: new QuickSort(),
+    },
+    {
+      name: 'Selection sort',
+      strategy: new SelectionSort(),
+    },
   ];
 
   constructor(private zone: NgZone) {}
