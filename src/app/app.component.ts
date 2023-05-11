@@ -7,6 +7,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { SelectionSort } from './alghorithms/selection-sort';
 import { Strategy } from './alghorithms/strategy';
 import { Algorithm } from './models/algorithm';
+import { isArraySorted } from './utils/is-array-sorted';
 
 @Component({
   selector: 'app-root',
@@ -70,19 +71,30 @@ export class AppComponent implements OnInit {
 
   sort() {
     if (this.isSorting) return;
+    if (isArraySorted(this.nodes.map((n) => n.value))) return;
+
     this.isSorting = true;
-    this.zone.runOutsideAngular(async () => {
-      this.sortingAlgorithm
-        .sort(this.nodes, async (nodes: any[]) => {
-          await delay(100 / this.speed);
-          this.chartComponent.updateNodes(nodes);
-        })
+    // this.zone.runOutsideAngular(async () => {
+      let prom = this.sortingAlgorithm
+        .sort(
+          this.nodes,
+          // callback when node swap happen
+          async (nodes: any[]) => {
+            if (this.isSorting == false) return;
+            await delay(100 / this.speed);
+            this.chartComponent.updateNodes(nodes);
+          }
+        )
         .then((nodes) => {
           //when finished
           this.nodes = nodes;
           this.isSorting = false;
+          console.log(this.isSorting)
         });
-    });
+    // });
+  }
+  cancelSorting() {
+    this.isSorting = false;
   }
 }
 

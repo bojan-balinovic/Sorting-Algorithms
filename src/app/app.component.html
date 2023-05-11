@@ -38,7 +38,17 @@
               Sort
             </button>
           </div>
-          
+          <div class="col-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="cancelSorting()"
+              class="w-100"
+              [disabled]="!isSorting"
+            >
+              Stop
+            </button>
+          </div>
           <div class="col-2">
             <button
               mat-raised-button
