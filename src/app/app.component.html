@@ -3,11 +3,11 @@
     <span>Sorting algorithms</span>
   </mat-toolbar-row>
 </mat-toolbar>
-<div class="row justify-content-center">
+<div class="row justify-content-center w-100">
   <div class="col-10">
     <mat-card class="card">
       <mat-card-header>
-        <div class="row w-100">
+        <div class="row justify-content-center w-100">
           <div class="col-4">
             <mat-form-field appearance="fill" class="w-100">
               <mat-label>Algorithm</mat-label>
@@ -25,9 +25,7 @@
           </div>
           <div class="col-2">
             <mat-label>Speed</mat-label>
-            <mat-slider min="1" max="100"  [(ngModel)]="speed">
-
-            </mat-slider>
+            <mat-slider min="1" max="100" [(ngModel)]="speed"> </mat-slider>
           </div>
           <div class="col-2">
             <button
@@ -35,16 +33,19 @@
               color="primary"
               (click)="sort()"
               class="w-100"
+              [disabled]="isSorting"
             >
               Sort
             </button>
           </div>
+          
           <div class="col-2">
             <button
               mat-raised-button
               color="primary"
               (click)="generateRandomNodes()"
               class="w-100"
+              [disabled]="isSorting"
             >
               Randomize
             </button>
@@ -52,8 +53,10 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <div class="rectangles-wrapper">
-          <app-chart #chart></app-chart>
+        <div class="row justify-content-center">
+          <div class="col-8 rectangles-wrapper">
+            <app-chart #chart></app-chart>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>

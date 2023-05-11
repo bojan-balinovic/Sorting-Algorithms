@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
   }
 
   generateRandomNodes() {
+    if (this.isSorting) return;
     this.nodes = [];
     this.chartComponent.clearAll();
     for (let i = 0; i < 100; i++) {
@@ -73,7 +74,7 @@ export class AppComponent implements OnInit {
     this.zone.runOutsideAngular(async () => {
       this.sortingAlgorithm
         .sort(this.nodes, async (nodes: any[]) => {
-          await delay(this.speed);
+          await delay(100 / this.speed);
           this.chartComponent.updateNodes(nodes);
         })
         .then((nodes) => {
