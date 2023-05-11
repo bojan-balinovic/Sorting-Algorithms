@@ -74,24 +74,23 @@ export class AppComponent implements OnInit {
     if (isArraySorted(this.nodes.map((n) => n.value))) return;
 
     this.isSorting = true;
-    // this.zone.runOutsideAngular(async () => {
-      let prom = this.sortingAlgorithm
-        .sort(
-          this.nodes,
-          // callback when node swap happen
-          async (nodes: any[]) => {
-            if (this.isSorting == false) return;
-            await delay(100 / this.speed);
-            this.chartComponent.updateNodes(nodes);
-          }
-        )
-        .then((nodes) => {
-          //when finished
-          this.nodes = nodes;
-          this.isSorting = false;
-          console.log(this.isSorting)
-        });
-    // });
+
+    let prom = this.sortingAlgorithm
+      .sort(
+        this.nodes,
+        // node swap event
+        async (nodes: any[]) => {
+          if (this.isSorting == false) return;
+          await delay((1 - this.speed / 100) * 100);
+          this.chartComponent.updateNodes(nodes);
+        }
+      )
+      .then((nodes) => {
+        // finished sorting
+        this.nodes = nodes;
+        this.isSorting = false;
+        console.log(this.isSorting);
+      });
   }
   cancelSorting() {
     this.isSorting = false;
