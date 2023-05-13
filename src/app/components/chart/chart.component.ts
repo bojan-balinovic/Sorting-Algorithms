@@ -8,8 +8,6 @@ import {
 } from '@angular/core';
 import { Node } from 'src/app/models/node';
 
-import * as d3 from 'd3';
-
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -45,8 +43,13 @@ export class ChartComponent implements OnInit {
   }
 
   public updateNodes(nodes: Node[]) {
+    if (!nodes || nodes.length == 0) return;
+    console.log(nodes);
     this.clearnGraphicsObjects();
-    nodes.forEach((node, i) => {
+    nodes.forEach((node: Node, i) => {
+      if (node == undefined) {
+        return;
+      }
       this.drawRectangle(
         i * 10 + this.offsetX,
         0,

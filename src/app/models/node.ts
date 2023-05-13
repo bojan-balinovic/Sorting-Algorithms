@@ -11,9 +11,11 @@ export class Node {
     this.id = id;
     this.value = value;
   }
+
   playFrequencySound() {
     ToneContext.playSound(this.value);
   }
+
   highlightSwap() {
     this.playFrequencySound();
     this.shouldHighlightInNextFrame = true;
