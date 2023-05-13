@@ -22,6 +22,7 @@ export class ChartComponent implements OnInit {
   offsetX = 0;
   offsetY = 0;
   graphicsObjects: any[] = [];
+  nodeHighlightedColor: string = '#009e52';
   private drawingContext!: CanvasRenderingContext2D;
 
   constructor(private renderer: Renderer2) {}
@@ -46,13 +47,26 @@ export class ChartComponent implements OnInit {
   public updateNodes(nodes: Node[]) {
     this.clearnGraphicsObjects();
     nodes.forEach((node, i) => {
-      this.drawRectangle(i * 10 + this.offsetX, 0, 10, node.value);
+      this.drawRectangle(
+        i * 10 + this.offsetX,
+        0,
+        10,
+        node.value,
+        node.shouldHighlightInNextFrame ? this.nodeHighlightedColor : undefined
+      );
+      node.shouldHighlightInNextFrame = false;
     });
   }
 
   private drawNodes() {}
 
-  private drawRectangle(x: number, y: number, width: number, height: number) {
+  private drawRectangle(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    fillColor = '#f5abaa'
+  ) {
     this.drawingContext.beginPath();
     y = 500 - height + this.offsetY;
     this.addGraphicsObjectsReference({
@@ -61,16 +75,23 @@ export class ChartComponent implements OnInit {
       width: width,
       height: height,
     });
-    this.drawingContext.fillRect(x, y, width, height);
+    this.drawingContext.fillStyle = fillColor;
+    this.drawingContext.strokeStyle = '#000';
+    this.drawingContext.rect(x, y, width, height);
+    this.drawingContext.fill();
     this.drawingContext.stroke();
   }
   addGraphicsObjectsReference(obj: GraphicsObject) {
     this.graphicsObjects.push(obj);
   }
   clearnGraphicsObjects() {
-    this.graphicsObjects.forEach((b: any) => {
-      this.drawingContext.clearRect(b.x, b.y, b.width, b.height);
-    });
+    // Clear everything from the canvas
+    this.drawingContext.clearRect(
+      0,
+      0,
+      this.canvas.nativeElement.width,
+      this.canvas.nativeElement.height
+    );
     this.graphicsObjects = [];
   }
   clearAll() {

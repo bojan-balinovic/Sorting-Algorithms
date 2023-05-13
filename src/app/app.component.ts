@@ -8,6 +8,7 @@ import { SelectionSort } from './alghorithms/selection-sort';
 import { Strategy } from './alghorithms/strategy';
 import { Algorithm } from './models/algorithm';
 import { isArraySorted } from './utils/is-array-sorted';
+import { shuffleArray } from './utils/shuffle-array';
 
 @Component({
   selector: 'app-root',
@@ -58,8 +59,9 @@ export class AppComponent implements OnInit {
     this.chartComponent.clearAll();
     for (let i = 0; i < 100; i++) {
       let randomNumber = Math.random() * 500;
-      this.nodes.push(new Node({ id: i, value: Math.floor(randomNumber) }));
+      this.nodes.push(new Node(i, i * 5));
     }
+    this.nodes = shuffleArray(this.nodes);
     this.chartComponent.initNodes(this.nodes);
   }
 
@@ -79,9 +81,9 @@ export class AppComponent implements OnInit {
       .sort(
         this.nodes,
         // node swap event
-        async (nodes: any[]) => {
+        async (nodes: any[], customSpeed=undefined) => {
           if (this.isSorting == false) return;
-          await delay((1 - this.speed / 100) * 100);
+          await delay(customSpeed || (1 - this.speed / 100) * 100);
           this.chartComponent.updateNodes(nodes);
         }
       )
@@ -89,7 +91,7 @@ export class AppComponent implements OnInit {
         // finished sorting
         this.nodes = nodes;
         this.isSorting = false;
-        console.log(this.isSorting);
+        this.chartComponent.updateNodes(nodes);
       });
   }
   cancelSorting() {
