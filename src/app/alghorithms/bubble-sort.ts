@@ -1,8 +1,8 @@
-import { NodeSwapCallback } from '../types/node-swap-callback';
+import { RenderNodesToken } from '../types/render-nodes-token';
 import { Strategy } from './strategy';
 
 export class BubbleSort extends Strategy {
-  sort(nodes: any[], nodeSwapCallback: NodeSwapCallback): Promise<any[]> {
+  sort(nodes: any[], renderNodesToken: RenderNodesToken): Promise<any[]> {
     return new Promise(async (resolve) => {
       for (let x = 0; x < nodes.length; ++x) {
         for (let y = 0; y < nodes.length; ++y) {
@@ -14,10 +14,10 @@ export class BubbleSort extends Strategy {
             nodes[y].value = p;
           }
         }
-        await nodeSwapCallback(nodes);
+        await renderNodesToken(nodes);
       }
 
-      await this.finishedEffect(nodes, nodeSwapCallback);
+      await this.finishedEffect(nodes, renderNodesToken);
 
       resolve(nodes);
     });

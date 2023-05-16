@@ -1,16 +1,16 @@
-import { NodeSwapCallback } from '../types/node-swap-callback';
+import { RenderNodesToken } from '../types/render-nodes-token';
 import { Strategy } from './strategy';
 import { Node } from '../models/node';
 
 export class QuickSort extends Strategy {
   public sort(
     nodes: Node[],
-    nodeSwapCallback: (currentNodesState: any[]) => void
+    renderNodesToken: (currentNodesState: any[]) => void
   ): Promise<any[]> {
     return new Promise(async (resolve) => {
-      await this.quickSort(nodes, 0, nodes.length, nodeSwapCallback);
-      await nodeSwapCallback(nodes);
-      await this.finishedEffect(nodes, nodeSwapCallback);
+      await this.quickSort(nodes, 0, nodes.length, renderNodesToken);
+      await renderNodesToken(nodes);
+      await this.finishedEffect(nodes, renderNodesToken);
       resolve(nodes);
     });
   }
@@ -21,19 +21,19 @@ export class QuickSort extends Strategy {
     nodes: Node[],
     low: number,
     high: number,
-    nodeSwapCallback: NodeSwapCallback
+    renderNodesToken: RenderNodesToken
   ) {
     if (low < high) {
-      let pi = await this.partition(nodes, low, high, nodeSwapCallback);
-      await this.quickSort(nodes, low, pi - 1, nodeSwapCallback);
-      await this.quickSort(nodes, pi + 1, high, nodeSwapCallback);
+      let pi = await this.partition(nodes, low, high, renderNodesToken);
+      await this.quickSort(nodes, low, pi - 1, renderNodesToken);
+      await this.quickSort(nodes, pi + 1, high, renderNodesToken);
     }
   }
   private async partition(
     nodes: Node[],
     low: number,
     high: number,
-    nodeSwapCallback: NodeSwapCallback
+    renderNodesToken: RenderNodesToken
   ): Promise<number> {
     let pivot = nodes[high];
     let i = low - 1;
@@ -46,12 +46,12 @@ export class QuickSort extends Strategy {
         //this.swap(nodes[i], nodes[j]);
         nodes[i]?.highlightSwap();
         nodes[j]?.highlightSwap();
-        await nodeSwapCallback(nodes);
+        await renderNodesToken(nodes);
       }
     }
     nodes[i + 1]?.highlightSwap();
     nodes[high]?.highlightSwap();
-    await nodeSwapCallback(nodes);
+    await renderNodesToken(nodes);
     let p = nodes[i + 1];
     nodes[i + 1] = nodes[high];
     nodes[high] = p;

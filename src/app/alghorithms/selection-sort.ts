@@ -1,10 +1,10 @@
-import { NodeSwapCallback } from '../types/node-swap-callback';
+import { RenderNodesToken } from '../types/render-nodes-token';
 import { Strategy } from './strategy';
 
 export class SelectionSort extends Strategy {
   override sort(
     nodes: any[],
-    nodeSwapCallback: NodeSwapCallback
+    renderNodesToken: RenderNodesToken
   ): Promise<any[]> {
     return new Promise(async (resolve) => {
       // here starts the algorithm
@@ -20,9 +20,9 @@ export class SelectionSort extends Strategy {
         let temp = nodes[i];
         nodes[i] = nodes[min];
         nodes[min] = temp;
-        await nodeSwapCallback(nodes);
+        await renderNodesToken(nodes);
       }
-      await this.finishedEffect(nodes, nodeSwapCallback);
+      await this.finishedEffect(nodes, renderNodesToken);
       resolve(nodes);
     });
   }

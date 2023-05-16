@@ -1,6 +1,6 @@
 import { Node } from '../models/node';
 
-export type NodeSwapCallback = (
+export type RenderNodesToken = (
   currentNodesState: Node[],
   customSpeed?: number
 ) => void;
