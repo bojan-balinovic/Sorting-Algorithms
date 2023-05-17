@@ -9,6 +9,7 @@ import { Strategy } from './alghorithms/strategy';
 import { Algorithm } from './models/algorithm';
 import { isArraySorted } from './utils/is-array-sorted';
 import { shuffleArray } from './utils/shuffle-array';
+import { InsertionSort } from './alghorithms/insertion-sort';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,10 @@ export class AppComponent implements OnInit {
     {
       name: 'Selection sort',
       strategy: new SelectionSort(),
+    },
+    {
+      name: 'Insertion sort',
+      strategy: new InsertionSort(),
     },
   ];
   isSorting: boolean = false;
@@ -81,7 +86,7 @@ export class AppComponent implements OnInit {
       .sort(
         this.nodes,
         // node swap event
-        async (nodes: any[], customSpeed=undefined) => {
+        async (nodes: any[], customSpeed = undefined) => {
           if (this.isSorting == false) return;
           await delay(customSpeed || (1 - this.speed / 100) * 100);
           this.chartComponent.updateNodes(nodes);
