@@ -3,6 +3,7 @@ export function isArraySorted(nodes: Array<any>) {
     return true;
   }
   for (let i = 0; i < nodes.length - 1; ++i) {
+    if (!nodes[i]) continue;
     if (nodes[i] > nodes[i + 1]) {
       return false;
     }

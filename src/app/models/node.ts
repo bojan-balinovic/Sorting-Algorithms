@@ -16,7 +16,7 @@ export class Node {
     ToneContext.playSound(this.value);
   }
 
-  highlightSwap() {
+  highlight() {
     this.playFrequencySound();
     this.shouldHighlightInNextFrame = true;
   }

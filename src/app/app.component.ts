@@ -10,6 +10,7 @@ import { Algorithm } from './models/algorithm';
 import { isArraySorted } from './utils/is-array-sorted';
 import { shuffleArray } from './utils/shuffle-array';
 import { InsertionSort } from './alghorithms/insertion-sort';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   sortingAlgorithm: SortingAlghorithm = new SortingAlghorithm();
   selectedAlgorithm?: Algorithm;
   speed: number = 50;
+  stopExecutionSubject = new Subject<boolean>();
 
   algorithms: Algorithm[] = [
     {
@@ -78,29 +80,43 @@ export class AppComponent implements OnInit {
 
   sort() {
     if (this.isSorting) return;
-    if (isArraySorted(this.nodes.map((n) => n.value))) return;
+    console.log(this.nodes.map((n) => n?.value))
+    if (isArraySorted(this.nodes.map((n) => n?.value))) {
+      console.log('already sorted');
+      return;
+    }
 
     this.isSorting = true;
 
     let prom = this.sortingAlgorithm
       .sort(
-        this.nodes,
+        [...this.nodes],
         // node swap event
         async (nodes: any[], customSpeed = undefined) => {
           if (this.isSorting == false) return;
           await delay(customSpeed || (1 - this.speed / 100) * 100);
+          this.nodes = nodes;
           this.chartComponent.updateNodes(nodes);
-        }
+        },
+        this.stopExecutionSubject
       )
       .then((nodes) => {
         // finished sorting
+        console.log('finished');
         this.nodes = nodes;
         this.isSorting = false;
         this.chartComponent.updateNodes(nodes);
+      })
+      .catch((ex) => {
+        this.nodes.forEach((node) => {
+          if (node) node.shouldHighlightInNextFrame = false;
+        });
+        this.chartComponent.updateNodes(this.nodes);
       });
   }
   cancelSorting() {
     this.isSorting = false;
+    this.stopExecutionSubject.next(true);
   }
 }
 
