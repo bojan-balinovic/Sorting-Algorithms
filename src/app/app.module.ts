@@ -11,9 +11,10 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatButtonModule} from '@angular/material/button';
 
 import { FormsModule } from '@angular/forms';
+import { VolumeAdjusterComponent } from './components/volume-adjuster/volume-adjuster.component';
 
 @NgModule({
-  declarations: [AppComponent, ChartComponent],
+  declarations: [AppComponent, ChartComponent, VolumeAdjusterComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

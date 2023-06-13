@@ -47,7 +47,7 @@
               class="w-100"
               [disabled]="!isSorting"
             >
-            <mat-icon> stop </mat-icon>
+              <mat-icon> stop </mat-icon>
               Stop
             </button>
           </div>
@@ -71,6 +71,11 @@
           </div>
         </div>
       </mat-card-content>
+      <mat-card-footer>
+        <div class="volume-ajuster-wrapper">
+          <app-volume-adjuster></app-volume-adjuster>
+        </div>
+      </mat-card-footer>
     </mat-card>
   </div>
 </div>

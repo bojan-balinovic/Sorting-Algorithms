@@ -1,13 +1,14 @@
 import * as Tone from 'tone';
 
 export class ToneContext {
-  private static instance: any;
+  private static instance: Tone.Synth;
   private static gainNode: GainNode;
   private static previousSoundStartTime: number = 0;
 
   public static getInstance(): Tone.Synth {
     if (!this.instance) {
       this.instance = new Tone.Synth().toDestination();
+      this.instance.volume.value = -20;
     }
     return this.instance;
   }

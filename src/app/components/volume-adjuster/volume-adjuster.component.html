@@ -1,0 +1,11 @@
+<div class="container">
+  <mat-icon *ngIf="volume === 0" (click)="toggleMute()" class="volume-button">volume_off</mat-icon>
+  <mat-icon *ngIf="volume > 0" (click)="toggleMute()" class="volume-button">volume_up</mat-icon>
+  <mat-slider
+    min="0"
+    max="100"
+    [(ngModel)]="volume"
+    (ngModelChange)="onVolumeChanged($event)"
+  >
+  </mat-slider>
+</div>

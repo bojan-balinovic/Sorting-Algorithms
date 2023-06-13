@@ -44,7 +44,7 @@ export class ChartComponent implements OnInit {
 
   public updateNodes(nodes: Node[]) {
     if (!nodes || nodes.length == 0) return;
-    console.log(nodes);
+
     this.clearnGraphicsObjects();
     nodes.forEach((node: Node, i) => {
       if (node == undefined) {
