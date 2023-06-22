@@ -9,7 +9,7 @@ import * as Tone from 'tone';
   styleUrls: ['./volume-adjuster.component.scss'],
 })
 export class VolumeAdjusterComponent implements OnInit {
-  volume: number = 75; // from 0 to 100
+  volume: number = 100; // from 0 to 100
   toneContext: Tone.Synth;
 
   private minDecibels = -80;

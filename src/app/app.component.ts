@@ -11,6 +11,7 @@ import { isArraySorted } from './utils/is-array-sorted';
 import { shuffleArray } from './utils/shuffle-array';
 import { InsertionSort } from './alghorithms/insertion-sort';
 import { Subject } from 'rxjs';
+import { MergeSort } from './alghorithms/merge-sort';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +47,10 @@ export class AppComponent implements OnInit {
       name: 'Insertion sort',
       strategy: new InsertionSort(),
     },
+    {
+      name: 'Merge sort',
+      strategy: new MergeSort(),
+    },
   ];
   isSorting: boolean = false;
 
@@ -80,7 +85,7 @@ export class AppComponent implements OnInit {
 
   sort() {
     if (this.isSorting) return;
-    console.log(this.nodes.map((n) => n?.value))
+    console.log(this.nodes);
     if (isArraySorted(this.nodes.map((n) => n?.value))) {
       console.log('already sorted');
       return;
@@ -106,6 +111,7 @@ export class AppComponent implements OnInit {
         this.nodes = nodes;
         this.isSorting = false;
         this.chartComponent.updateNodes(nodes);
+        console.log(nodes);
       })
       .catch((ex) => {
         this.nodes.forEach((node) => {
